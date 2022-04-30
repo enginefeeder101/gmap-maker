@@ -154,6 +154,7 @@ my @seaboundariesurl = (
 #   'help_en'                => encode('utf8', decode('iso-8859-1',"Your help is welcome:\nYou can help to improve the OpenStreetMap source data, and therefore also this map. If something is missing or wrong in the source data you can add or correct that on OpenStreetMap. That's easier as you might think. Get registered on OpenStreetMap and just try it out. This way everyone can profit from your knowledge.\nInformation about defects found while using this map are also helpful. Also ideas about changes and improvments are very welcome.\nMany thanks for your support.\n")),
 #   );
 my %lic_fzk = ();
+my %lic_ofm = ();
 
 # OSM data: static
 #my %lic_osm = (
@@ -253,6 +254,7 @@ my @maps = (
 #  [ 6031, 'Freizeitkarte_AZE',                    'http://be.gis-lab.info/data/osm_dump/dump/latest/AZ.osm.pbf',                                       'AZE',                      'en', 'no_old_name',                             3, 'NA'             ],
   [ 6112, 'Freizeitkarte_BLR',                    'http://download.geofabrik.de/europe/belarus-latest.osm.pbf',                                        'BLR',                      'ru', 'Freizeitkarte_Belarus',                   3, 'NA'             ],
   [ 6056, 'Freizeitkarte_BEL',                    'http://download.geofabrik.de/europe/belgium-latest.osm.pbf',                                        'BEL',                      'fr', 'Freizeitkarte_Belgien',                   3, 'NA'             ],
+  [ 6057, 'OpenFietsMap_BEL',                     'http://download.geofabrik.de/europe/belgium-latest.osm.pbf',                                        'OFM_BEL',                  'nl', 'no_old_name',                             3, 'NA'             ],
   [ 6070, 'Freizeitkarte_BIH',                    'http://download.geofabrik.de/europe/bosnia-herzegovina-latest.osm.pbf',                             'BIH',                      'en', 'Freizeitkarte_Bosnien-Herzegowina',       3, 'NA'             ],
   [ 6100, 'Freizeitkarte_BGR',                    'http://download.geofabrik.de/europe/bulgaria-latest.osm.pbf',                                       'BGR',                      'en', 'Freizeitkarte_Bulgarien',                 3, 'NA'             ],
   [ 6756, 'Freizeitkarte_CHE',                    'http://download.geofabrik.de/europe/switzerland-latest.osm.pbf',                                    'CHE',                      'de', 'Freizeitkarte_Schweiz',                   3, 'NA'             ],
@@ -260,6 +262,7 @@ my @maps = (
   [ 6203, 'Freizeitkarte_CZE',                    'http://download.geofabrik.de/europe/czech-republic-latest.osm.pbf',                                 'CZE',                      'en', 'Freizeitkarte_Tschechien',                3, 'NA'             ],
   [ 6208, 'Freizeitkarte_DNK',                    'http://download.geofabrik.de/europe/denmark-latest.osm.pbf',                                        'DNK',                      'en', 'Freizeitkarte_Daenemark',                 3, 'NA'             ],
   [ 6276, 'Freizeitkarte_DEU',                    'http://download.geofabrik.de/europe/germany-latest.osm.pbf',                                        'DEU',                      'de', 'Freizeitkarte_Deutschland',               3, 'NA'             ],
+  [ 6277, 'OpenFietsMap_DEU',                     'http://download.geofabrik.de/europe/germany-latest.osm.pbf',                                        'OFM_DEU',                  'de', 'no_old_name',                             3, 'NA'             ],
   [ 6724, 'Freizeitkarte_ESP',                    'http://download.geofabrik.de/europe/spain-latest.osm.pbf',                                          'ESP',                      'en', 'Freizeitkarte_Spanien',                   3, 'NA'             ],
   [ 6233, 'Freizeitkarte_EST',                    'http://download.geofabrik.de/europe/estonia-latest.osm.pbf',                                        'EST',                      'en', 'Freizeitkarte_Estland',                   3, 'NA'             ],
   [ 6234, 'Freizeitkarte_FRO',                    'http://download.geofabrik.de/europe/faroe-islands-latest.osm.pbf',                                  'FRO',                      'en', 'Freizeitkarte_Faeroeer',                  3, 'NA'             ],
@@ -286,6 +289,7 @@ my @maps = (
   [ 6470, 'Freizeitkarte_MLT',                    'http://download.geofabrik.de/europe/malta-latest.osm.pbf',                                          'MLT',                      'en', 'Freizeitkarte_Malta',                     3, 'NA'             ],
   [ 6499, 'Freizeitkarte_MNE',                    'http://download.geofabrik.de/europe/montenegro-latest.osm.pbf',                                     'MNE',                      'en', 'Freizeitkarte_Montenegro',                3, 'NA'             ],
   [ 6528, 'Freizeitkarte_NLD',                    'http://download.geofabrik.de/europe/netherlands-latest.osm.pbf',                                    'NLD',                      'nl', 'Freizeitkarte_Niederlande',               3, 'NA'             ],
+  [ 6529, 'OpenFietsMap_NLD',                     'http://download.geofabrik.de/europe/netherlands-latest.osm.pbf',                                    'OFM_NLD',                  'nl', 'no_old_name',                             3, 'NA'             ],
   [ 6578, 'Freizeitkarte_NOR',                    'http://download.geofabrik.de/europe/norway-latest.osm.pbf',                                         'NOR',                      'en', 'Freizeitkarte_Norwegen',                  3, 'NA'             ],
   [ 6616, 'Freizeitkarte_POL',                    'http://download.geofabrik.de/europe/poland-latest.osm.pbf',                                         'POL',                      'pl', 'Freizeitkarte_Polen',                     3, 'NA'             ],
   [ 6620, 'Freizeitkarte_PRT',                    'http://download.geofabrik.de/europe/portugal-latest.osm.pbf',                                       'PRT',                      'pt', 'Freizeitkarte_Portugal',                  3, 'NA'             ],
@@ -354,11 +358,13 @@ my @maps = (
 
   # Sonderkarten wie z.B. FZK-eigene Extrakte (alle ohne geofabrik-Download (NA = Not Applicable); Ausnahme Europa)
   [ -1,   'Freizeitkarte Regionen',               'URL',                                                                                               'Code',               'Language', 'oldName',                            'Type', 'Parent'         ],
+  [ 8887, 'OpenFietsMap_EUROPE',                  'http://download.geofabrik.de/europe-latest.osm.pbf',                                                'OFM_EUROPE',               'en', 'no_old_name',                             1, 'NA'             ],
   [ 8888, 'Freizeitkarte_EUROPE',                 'http://download.geofabrik.de/europe-latest.osm.pbf',                                                'EUROPE',                   'en', 'no_old_name',                             1, 'NA'             ],
   [ 8010, 'Freizeitkarte_GBR_IRL',                'NA',                                                                                                'GBR_IRL',                  'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8020, 'Freizeitkarte_ALPS',                   'NA',                                                                                                'ALPS',                     'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8030, 'Freizeitkarte_DNK_NOR_SWE_FIN',        'NA',                                                                                                'DNK_NOR_SWE_FIN',          'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8040, 'Freizeitkarte_BEL_NLD_LUX',            'NA',                                                                                                'BEL_NLD_LUX',              'en', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8041, 'OpenFietsMap_BEL_NLD_LUX',             'NA',                                                                                                'OFM_BEL_NLD_LUX',          'nl', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8050, 'Freizeitkarte_ESP_PRT',                'NA',                                                                                                'ESP_PRT',                  'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8060, 'Freizeitkarte_PYRENEES',               'NA',                                                                                                'PYRENEES',                 'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8070, 'Freizeitkarte_CARPATHIAN',             'NA',                                                                                                'CARPATHIAN',               'en', 'no_old_name',                             2, 'EUROPE'         ],
@@ -374,6 +380,7 @@ my @maps = (
 # [ 9011, 'Freizeitkarte_RUS',                     'http://data.gis-lab.info/osm_dump/dump/latest/RU.osm.pbf',                                          'RUS',                     'ru', 'no_old_name',                             1, 'NA'             ],
   [ 9011, 'Freizeitkarte_RUS',                     'http://download.geofabrik.de/russia-latest.osm.pbf',                                                'RUS',                     'ru', 'no_old_name',                             1, 'NA'             ],
   [ 9020, 'Freizeitkarte_ESP_CANARIAS',            'http://download.geofabrik.de/africa/canary-islands-latest.osm.pbf',                                 'ESP_CANARIAS',            'en', 'Freizeitkarte_Kanarische-Inseln',         3, 'NA'             ],
+  [ 9021, 'OpenFietsMap_ESP_CANARIAS',             'http://download.geofabrik.de/africa/canary-islands-latest.osm.pbf',                                 'OFM_ESP_CANARIAS',        'en', 'no_old_name',                             3, 'NA'             ],
   [ 9030, 'Freizeitkarte_RUS_CENTRAL_FD+',         'NA',                                                                                                'RUS_CENTRAL_FD+',         'ru', 'no_old_name',                             2, 'RUS'            ],
   [ 9040, 'Freizeitkarte_AZORES',                  'http://download.geofabrik.de/europe/azores-latest.osm.pbf',                                         'AZORES',                  'pt', 'Freizeitkarte_Azoren',                    3, 'NA'             ],
   [ 9050, 'Freizeitkarte_ISR_PSE',                 'http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf',                             'ISR_PSE',                 'en', 'Freizeitkarte_Israel_Palaestina',         3, 'NA'             ],
@@ -534,6 +541,10 @@ my $typfilelangcode = $EMPTY;
 
 my $mkgmap_common_parameter = $EMPTY;
 
+my $mapkind = "Freizeitkarte"; # or "OpenFietsMap"
+my $ofmmaptypefile = "ofm.TYP";
+my $ofmmapstyle = "ofm";
+my $ofmmapstyledir = 'style/ofm';
 
 # get the command line parameters
 if ( ! GetOptions ( 'h|?|help' => \$help, 'o|optional' => \$optional, 'u|unicode' => \$unicode, 'downloadbar' => \$downloadbar, 'continuedownload' => \$continuedownload, 'downloadspeed=s' => \$downloadspeed, 'ram=s' => \$ram, 'cores=s' => \$cores, 'ele=s' => \$ele, 'hqele' => \$hqele, 'typfile=s' => \$typfile, 'style=s' => \$styledir, 'language=s' => \$language, 'ntl=s' => \$nametaglist, 'dempath=s' => \$dempath, 'demdists=s' => \$demdists, 'demtype=s' => \$demtype ) ) {
@@ -679,6 +690,15 @@ if ( $error ) {
   printf { *STDOUT } ( "ERROR:\n  Map '" . $mapinput . "' not valid (invalid ID, code or name).\n\n\n" );
   show_usage ();
   exit(1);
+}
+
+# Check for OpenFietsMap
+if ( substr($mapname, 0, 12) eq "OpenFietsMap") {
+  $mapkind     = "OpenFietsMap";
+  $maptypfile  = $ofmmaptypefile;
+  $mapstyle    = $ofmmapstyle;
+  $mapstyledir = $ofmmapstyledir;
+  %lic_fzk     = %lic_ofm;
 }
 
 # Default Map Language overwritten ?
@@ -1412,6 +1432,7 @@ sub fetch_eledata {
     # $eleurl = "$elevationbaseurl{ele25}/Hoehendaten_$mapname.osm.pbf";
     die ( "ERROR:\n  elevation data: unsupported constant contour value of $ele choosen.\n\n" );
   }
+  $eleurl =~ s/OpenFietsMap/Freizeitkarte/g;
 
    download_url( $eleurl, $filename);
 
@@ -1509,6 +1530,7 @@ sub read_default_licenses {
 
   # Set filenames
   my $fzk_licensefile = "$BASEPATH/licenses/default-freizeitkarte.license";
+  my $ofm_licensefile = "$BASEPATH/licenses/default-openfietsmap.license";
   my $osm_licensefile = "$BASEPATH/licenses/default-osm.license";
   my $ele_licensefile = "$BASEPATH/licenses/default-elevation.license";
 
@@ -1517,6 +1539,13 @@ sub read_default_licenses {
   %lic_tmphash = read_licensefile($fzk_licensefile);
   foreach my $hashkey ( sort ( keys %lic_tmphash ) ) {
     $lic_fzk{$hashkey} = $lic_tmphash{$hashkey};
+  }
+
+  # Handle ofm license file
+  %lic_tmphash = ();
+  %lic_tmphash = read_licensefile($ofm_licensefile);
+  foreach my $hashkey ( sort ( keys %lic_tmphash ) ) {
+    $lic_ofm{$hashkey} = $lic_tmphash{$hashkey};
   }
 
   # Handle osm license file
@@ -3406,7 +3435,7 @@ sub create_nsis_nsi_full {
   printf { $fh } ( "; ----------------\n" );
   printf { $fh } ( "\n" );
   printf { $fh } ( "; Installationsverzeichnis (Default)\n" );
-  printf { $fh } ( "!define INSTALLATIONS_VERZEICHNIS \"C:\\Freizeitkarte\\%s\"\n", $mapname );
+  printf { $fh } ( "!define INSTALLATIONS_VERZEICHNIS \"C:\\$mapkind\\%s\"\n", $mapname );
   printf { $fh } ( "\n" );
   printf { $fh } ( "; Beschreibung der Karte\n" );
   printf { $fh } ( "!define KARTEN_BESCHREIBUNG \"%s\"\n", $mapname );
