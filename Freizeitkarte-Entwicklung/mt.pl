@@ -58,6 +58,7 @@ my @actions = (
   [ 'zip',        'G. zip all maps' ,                                                 'optional' ,    'yes' ,      '23' ],
   [ 'regions',    'H. extract all needed maps from big region data',                  'optional' ,    'no' ,       '1' ],
   [ 'extract_osm','I. extract single map from big region data' ,                      'optional' ,    'no' ,       '2' ],
+  [ 'extract_ele','I. extract elevation data from big region data' ,                  'optional' ,    'no' ,       '2' ],
   [ 'alltypfiles','J. Create all languages of the TYP files' ,                        'optional' ,    'no' ,       '0' ],
   [ 'replacetyp', 'K. Create all language versions of ReplaceTyp.zip' ,               'optional' ,    'no' ,       '0' ],
   [ 'check_osmid','L. Check overlapping OSM ID ranges for map and ele',               'optional' ,    'no' ,       '23' ],
@@ -990,6 +991,9 @@ elsif ( $actionname eq 'fetch_map' ) {
 }
 elsif ( $actionname eq 'extract_osm' ) {
   extract_osm ();
+}
+elsif ( $actionname eq 'extract_ele' ) {
+  extract_ele ();
 }
 exit ( 0 );
 
@@ -4992,6 +4996,96 @@ sub extract_osm {
 
 
   	 # File already exists or has just been created: let's try to copy the file
+     printf { *STDERR } ( "\nCopying the existing OSM data file $source_filename ...\n" );
+     copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     printf { *STDERR } ( "\n") ;
+
+  }
+  else {
+     die ( "\nERROR: $mapname is not a region that needed local extraction.\n" );
+  }
+
+}
+
+
+# ---------------------------------------------------------------------
+# Either extract the needed elevation data from the parent Region file or,
+# if already cut, just copy it
+# ---------------------------------------------------------------------
+sub extract_ele {
+
+  # If this map is a regions that needed to be extracted, try to fetch the extracted region
+  if ( $maptype == 2 ) {
+
+     # Initialisation
+     my $mapparentname = $EMPTY;
+
+	 # Get the proper Map Parent's Name
+	 for my $tmp_mapdata ( @maps ) {
+	    if ( @$tmp_mapdata[ $MAPCODE ] eq $mapparent ) {
+		   $mapparentname = @$tmp_mapdata[ $MAPNAME ];
+		   last;
+		}
+	 }
+
+     # fill out source and destination variables
+     my $source_filename      = "$BASEPATH/work/$mapparentname/Hoehendaten_$mapname.osm.pbf";
+     my $parent_filename      = "$BASEPATH/work/$mapparentname/Hoehendaten_$mapparentname.osm.pbf";
+     my $destination_filename = "$WORKDIR/Hoehendaten_$mapname.osm.pbf";
+
+     # Check if the source file does exist already
+     if ( !(-e $source_filename ) ) {
+		# NOT existing, let's try to cut it
+
+		# Initialise few variables for the osmosis run
+        my $osmosis_parameter = "";
+
+         # Check if the source file exists and is a valid osm.pbf file
+         if ( -e $parent_filename ) {
+           if ( !check_osmpbf ( $parent_filename ) ) {
+             printf { *STDERR } ( "\nError: Resulting data file <$parent_filename> is not a valid osm.pbf file.\n" );
+             return ( 1 );
+           }
+         }
+         else {
+           printf { *STDERR } ( "\nError: Source data file <$parent_filename> does not exists.\n" );
+           printf ( "       Did you already download the osmdata of the map $mapparentname ?\n\n" );
+           return ( 1 );
+         }
+
+		 # Let's put the parameters together for the osmosis run
+         $osmosis_parameter =
+            " --read-pbf file=$parent_filename"
+          . " --tee 1"
+          . " --bounding-polygon file=$BASEPATH/poly/$mapname.poly"
+          . " --write-pbf file=$source_filename omitmetadata=yes";
+
+         # Ok, let's run osmosis, depending on the OS
+         printf { *STDERR } ( "\nExtracting needed data from OSM data file $source_filename ...\n" );
+         if ( ( $OSNAME eq 'darwin' ) || ( $OSNAME eq 'linux' ) || ( $OSNAME eq 'freebsd' ) || ( $OSNAME eq 'openbsd' ) ) {
+           # OS X, Linux, FreeBSD, OpenBSD
+           $command = "sh $BASEPATH/tools/osmosis/bin/osmosis $osmosis_parameter";
+         }
+         elsif ( $OSNAME eq 'MSWin32' ) {
+           # Windows
+           $command = "$BASEPATH/tools/osmosis/bin/osmosis.bat $osmosis_parameter";
+         }
+         else {
+           die ( "\nError: Operating System $OSNAME not supported.\n" );
+         }
+
+        # Run the acual extraction via osmosis
+        process_command ( $command );
+
+        # Check Return Value
+        if ( $? != 0 ) {
+           die ( "ERROR:\n  Cutting out the data for $mapname failed.\n\n" );
+        }
+
+     }
+
+
+     # File already exists or has just been created: let's try to copy the file
      printf { *STDERR } ( "\nCopying the existing OSM data file $source_filename ...\n" );
      copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
      printf { *STDERR } ( "\n") ;
