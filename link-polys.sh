@@ -4,5 +4,5 @@ FILES=$(grep -P "\[\s*\d{4},\s*'OpenFietsMap_" mt.pl | awk '{print $3}' | cut -c
 cd poly
 for FILE in $FILES; do
   ORIG=${FILE//OpenFietsMap_/Freizeitkarte_}
-  [ ! -f $FILE.poly ] && ln -sf $ORIG.poly $FILE.poly
+  [ ! -f $FILE.poly ] && [ -f $ORIG.poly ] && ln -sf $ORIG.poly $FILE.poly
 done
