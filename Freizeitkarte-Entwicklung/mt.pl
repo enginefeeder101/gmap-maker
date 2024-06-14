@@ -4,7 +4,7 @@
 # Version : siehe unten
 #
 # Copyright (C) 2011-2013 Klaus Tockloth <Klaus.Tockloth@googlemail.com>
-#               2013-2015 Adaptions by Patrik Brunner <keenonkites@gmx.net>
+#               2013-2022 Adaptions by Patrik Brunner <keenonkites@gmx.net>
 # - modified for Ubuntu through GVE
 #
 # Programmcode formatiert mit "perltidy".
@@ -248,7 +248,8 @@ my @maps = (
   [ -1,   'Europaeische Laender',                 'URL',                                                                                               'Code',               'Language', 'oldName',                            'Type', 'Parent'         ],
   [ 6008, 'Freizeitkarte_ALB',                    'http://download.geofabrik.de/europe/albania-latest.osm.pbf',                                        'ALB',                      'en', 'Freizeitkarte_Albanien',                  3, 'NA'             ],
   [ 6020, 'Freizeitkarte_AND',                    'http://download.geofabrik.de/europe/andorra-latest.osm.pbf',                                        'AND',                      'en', 'Freizeitkarte_Andorra',                   3, 'NA'             ],
-  [ 6051, 'Freizeitkarte_ARM',                    'http://be.gis-lab.info/data/osm_dump/dump/latest/AM.osm.pbf',                                       'ARM',                      'en', 'no_old_name',                             3, 'NA'             ],
+  [ 6051, 'Freizeitkarte_ARM',                    'https://download.geofabrik.de/asia/armenia-latest.osm.pbf',                                         'ARM',                      'en', 'no_old_name',                             3, 'NA'             ],
+#  [ 6051, 'Freizeitkarte_ARM',                    'http://be.gis-lab.info/data/osm_dump/dump/latest/AM.osm.pbf',                                       'ARM',                      'en', 'no_old_name',                             3, 'NA'             ],
   [ 6040, 'Freizeitkarte_AUT',                    'http://download.geofabrik.de/europe/austria-latest.osm.pbf',                                        'AUT',                      'de', 'Freizeitkarte_Oesterreich',               3, 'NA'             ],
   [ 6031, 'Freizeitkarte_AZE',                    'http://download.geofabrik.de/asia/azerbaijan-latest.osm.pbf',                                       'AZE',                      'en', 'no_old_name',                             3, 'NA'             ],
 #  [ 6031, 'Freizeitkarte_AZE',                    'http://be.gis-lab.info/data/osm_dump/dump/latest/AZ.osm.pbf',                                       'AZE',                      'en', 'no_old_name',                             3, 'NA'             ],
@@ -269,7 +270,8 @@ my @maps = (
   [ 6246, 'Freizeitkarte_FIN',                    'http://download.geofabrik.de/europe/finland-latest.osm.pbf',                                        'FIN',                      'en', 'Freizeitkarte_Finnland',                  3, 'NA'             ],
   [ 6250, 'Freizeitkarte_FRA',                    'http://download.geofabrik.de/europe/france-latest.osm.pbf',                                         'FRA',                      'fr', 'Freizeitkarte_Frankreich',                3, 'NA'             ],
   [ 6826, 'Freizeitkarte_GBR',                    'http://download.geofabrik.de/europe/great-britain-latest.osm.pbf',                                  'GBR',                      'en', 'Freizeitkarte_Grossbritannien',           3, 'NA'             ],
-  [ 6268, 'Freizeitkarte_GEO',                    'http://be.gis-lab.info/data/osm_dump/dump/latest/GE.osm.pbf',                                       'GEO',                      'en', 'no_old_name',                             3, 'NA'             ],
+#  [ 6268, 'Freizeitkarte_GEO',                    'http://be.gis-lab.info/data/osm_dump/dump/latest/GE.osm.pbf',                                       'GEO',                      'en', 'no_old_name',                             3, 'NA'             ],
+  [ 6268, 'Freizeitkarte_GEO',                    'https://download.geofabrik.de/europe/georgia-latest.osm.pbf',                                       'GEO',                      'en', 'no_old_name',                             3, 'NA'             ],
   [ 6300, 'Freizeitkarte_GRC',                    'http://download.geofabrik.de/europe/greece-latest.osm.pbf',                                         'GRC',                      'en', 'Freizeitkarte_Griechenland',              3, 'NA'             ],
   [ 6191, 'Freizeitkarte_HRV',                    'http://download.geofabrik.de/europe/croatia-latest.osm.pbf',                                        'HRV',                      'en', 'Freizeitkarte_Kroatien',                  3, 'NA'             ],
   [ 6348, 'Freizeitkarte_HUN',                    'http://download.geofabrik.de/europe/hungary-latest.osm.pbf',                                        'HUN',                      'en', 'Freizeitkarte_Ungarn',                    3, 'NA'             ],
@@ -277,6 +279,7 @@ my @maps = (
   [ 6372, 'Freizeitkarte_IRL',                    'http://download.geofabrik.de/europe/ireland-and-northern-ireland-latest.osm.pbf',                   'IRL',                      'en', 'Freizeitkarte_Irland',                    3, 'NA'             ],
   [ 6352, 'Freizeitkarte_ISL',                    'http://download.geofabrik.de/europe/iceland-latest.osm.pbf',                                        'ISL',                      'en', 'Freizeitkarte_Island',                    3, 'NA'             ],
   [ 6380, 'Freizeitkarte_ITA',                    'http://download.geofabrik.de/europe/italy-latest.osm.pbf',                                          'ITA',                      'it', 'Freizeitkarte_Italien',                   3, 'NA'             ],
+  [ 6398, 'Freizeitkarte_KAZ',                    'https://download.geofabrik.de/asia/kazakhstan-latest.osm.pbf',                                      'KAZ',                      'en', 'Freizeitkarte_Kazakhsthan',                    3, 'NA'             ],  
   [ 6680, 'Freizeitkarte_KOSOVO',                 'http://download.geofabrik.de/europe/kosovo-latest.osm.pbf',                                         'KOSOSVO',                  'en', 'Freizeitkarte_Kosovo',                    3, 'NA'             ],
   [ 6428, 'Freizeitkarte_LVA',                    'http://download.geofabrik.de/europe/latvia-latest.osm.pbf',                                         'LVA',                      'en', 'Freizeitkarte_Lettland',                  3, 'NA'             ],
   [ 6438, 'Freizeitkarte_LIE',                    'http://download.geofabrik.de/europe/liechtenstein-latest.osm.pbf',                                  'LIE',                      'en', 'Freizeitkarte_Liechtenstein',             3, 'NA'             ],
@@ -362,6 +365,8 @@ my @maps = (
   [ 8888, 'Freizeitkarte_EUROPE',                 'http://download.geofabrik.de/europe-latest.osm.pbf',                                                'EUROPE',                   'en', 'no_old_name',                             1, 'NA'             ],
   [ 8010, 'Freizeitkarte_GBR_IRL',                'NA',                                                                                                'GBR_IRL',                  'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8020, 'Freizeitkarte_ALPS',                   'NA',                                                                                                'ALPS',                     'en', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8021, 'Freizeitkarte_ALPS_WEST',              'NA',                                                                                                'ALPS_WEST',                'en', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8022, 'Freizeitkarte_ALPS_EAST',              'NA',                                                                                                'ALPS_EAST',                'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8030, 'Freizeitkarte_DNK_NOR_SWE_FIN',        'NA',                                                                                                'DNK_NOR_SWE_FIN',          'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8031, 'Freizeitkarte_NORTH-EUROPE',           'NA',                                                                                                'NORTH-EUROPE',             'nl', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8032, 'OpenFietsMap_NORTH-EUROPE',           'NA',                                                                                                 'OFM_NORTH-EUROPE',         'nl', 'no_old_name',                             2, 'EUROPE'         ],
@@ -371,6 +376,12 @@ my @maps = (
   [ 8060, 'Freizeitkarte_PYRENEES',               'NA',                                                                                                'PYRENEES',                 'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8070, 'Freizeitkarte_CARPATHIAN',             'NA',                                                                                                'CARPATHIAN',               'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8080, 'Freizeitkarte_BALKAN',                 'NA',                                                                                                'BALKAN',                   'en', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8090, 'Freizeitkarte_DEU+NORTH',              'NA',                                                                                                'DEU+NORTH',                'de', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8091, 'Freizeitkarte_DEU+SOUTH',              'NA',                                                                                                'DEU+SOUTH',                'de', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8100, 'Freizeitkarte_FRA+NORTHWEST',          'NA',                                                                                                'FRA+NORTHWEST',            'fr', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8101, 'Freizeitkarte_FRA+NORTHEAST',          'NA',                                                                                                'FRA+NORTHEAST',            'fr', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8102, 'Freizeitkarte_FRA+SOUTHWEST',          'NA',                                                                                                'FRA+SOUTHWEST',            'fr', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8103, 'Freizeitkarte_FRA+SOUTHEAST',          'NA',                                                                                                'FRA+SOUTHEAST',            'fr', 'no_old_name',                             2, 'EUROPE'         ],
 
   [ 8889, 'Freizeitkarte_SOUTHAMERICA',           'http://download.geofabrik.de/south-america-latest.osm.pbf',                                         'SOUTHAMERICA',             'en', 'no_old_name',                             1, 'NA'             ],
   [ 8510, 'Freizeitkarte_MISIONES',               'NA',                                                                                                'MISIONES',                 'de', 'no_old_name',                             2, 'SOUTHAMERICA'   ],
@@ -443,7 +454,7 @@ my $ACTIONTARGET = 4;
 my $LANGCODE = 0;
 my $LANGDESC = 1;
 
-my $VERSION = '1.3.18 - 2021/01/18';
+my $VERSION = '1.3.19 - 2022/05/14';
 
 # Maximale Speichernutzung (Heapsize im MB) beim Splitten und Compilieren
 my $javaheapsize = 1536;
@@ -3433,6 +3444,14 @@ sub create_nsis_nsi_full {
   printf { $fh } ( "; - Kopieren des Deinstallationsprogramms\n" );
   printf { $fh } ( "; ------------------------------------------------------------\n" );
   printf { $fh } ( "\n" );
+
+  printf { $fh } ( "; Unicode (needed on makensis > 3.0a)\n" );
+  printf { $fh } ( "; -----------------------------------\n" );
+  printf { $fh } ( "!if \"\${NSIS_PACKEDVERSION}\" > 0x02ffffff\n" );
+  printf { $fh } ( "  Unicode True\n" );
+  printf { $fh } ( "!endif\n" );
+
+  # Settings and definitions
   printf { $fh } ( "; General Settings\n" );
   printf { $fh } ( "; ----------------\n" );
   printf { $fh } ( "\n" );
@@ -3627,13 +3646,19 @@ sub create_nsis_nsi_full {
   printf { $fh } ( "  Delete \$MyTempDir\n" );
   printf { $fh } ( "  CreateDirectory \$MyTempDir\n" );
   printf { $fh } ( "\n" );
+  printf { $fh } ( "  ; Include correct plugins\n" );
+  printf { $fh } ( "  ; -----------------------\n" );
+  printf { $fh } ( "  !if \"\${NSIS_PACKEDVERSION}\" > 0x02ffffff\n" );
+  printf { $fh } ( "    !addplugindir \"\%s\\tools\\NSIS\\windows\\Plugins\\x86-unicode\"\n", $BASEPATH );
+  printf { $fh } ( "  !else\n" );
+  printf { $fh } ( "    !addplugindir \"\%s\\tools\\NSIS\\windows\\Plugins\\x86-ansi\"\n", $BASEPATH );
+  printf { $fh } ( "  !endif\n" );
+  printf { $fh } ( "\n" );
   printf { $fh } ( "  ; Files to be installed\n" );
   printf { $fh } ( "  ; ---------------------\n" );
   printf { $fh } ( "  SetOutPath \"\$MyTempDir\"\n" );
   printf { $fh } ( "  File \"\${MAPNAME}_InstallFiles.zip\"\n" );
-
-  printf { $fh } ( "  !addplugindir \"\%s\\tools\\NSIS\\windows\\Plugins\\x86-ansi\"\n", $BASEPATH );
-
+  printf { $fh } ( "\n" );
   printf { $fh } ( "  nsisunz::UnzipToLog \"\$MyTempDir\\\${MAPNAME}_InstallFiles.zip\" \"\$MyTempDir\"\n" );
   printf { $fh } ( "  Pop \$0\n" );
   printf { $fh } ( "  StrCmp \$0 \"success\" +2\n" );
@@ -3925,6 +3950,12 @@ sub create_nsis_nsi_gmap {
   printf { $fh } ( "; ------------------------------------------------------------\n" );
   printf { $fh } ( "\n" );
 
+  printf { $fh } ( "; Unicode (needed on makensis > 3.0a)\n" );
+  printf { $fh } ( "; -----------------------------------\n" );
+  printf { $fh } ( "!if \"\${NSIS_PACKEDVERSION}\" > 0x02ffffff\n" );
+  printf { $fh } ( "  Unicode True\n" );
+  printf { $fh } ( "!endif\n" );
+
   # Settings and definitions
   printf { $fh } ( "; General Settings\n" );
   printf { $fh } ( "; ----------------\n" );
@@ -4071,9 +4102,17 @@ sub create_nsis_nsi_gmap {
   printf { $fh } ( "; -------------------------------------------------------------------\n" );
   printf { $fh } ( "Function .onInit\n" );
   printf { $fh } ( "\n" );
+  printf { $fh } ( "  ; Include correct plugins\n" );
+  printf { $fh } ( "  ; -----------------------\n" );
+  printf { $fh } ( "  !if \"\${NSIS_PACKEDVERSION}\" > 0x02ffffff\n" );
+  printf { $fh } ( "    !addplugindir \"\%s\\tools\\NSIS\\windows\\Plugins\\x86-unicode\"\n", $BASEPATH );
+  printf { $fh } ( "  !else\n" );
+  printf { $fh } ( "    !addplugindir \"\%s\\tools\\NSIS\\windows\\Plugins\\x86-ansi\"\n", $BASEPATH );
+  printf { $fh } ( "  !endif\n" );
+  printf { $fh } ( "\n" );
+
   printf { $fh } ( "  ; Initiate the logging\n" );
   printf { $fh } ( "  ; ---------------------------------------------------------\n" );
-  printf { $fh } ( "  !addplugindir \"\%s\\tools\\NSIS\\windows\\Plugins\\x86-ansi\"\n", $BASEPATH );
   printf { $fh } ( "  LogEx::Init true \"\$EXEDIR\\\${MAPNAME}-install.log\"\n" );
   printf { $fh } ( "  LogEx::Write  \"Init: Starting installation: \${MAPNAME} \${KARTEN_AUSGABE}\"\n" );
   printf { $fh } ( "\n" );
@@ -4216,11 +4255,11 @@ sub create_nsis_nsi_gmap {
   printf { $fh } ( "  \n" );
   printf { $fh } ( "  ; Print Garmin Maps Dir content:\n" );
   printf { $fh } ( "  ; ------------------------------\n" );
-  printf { $fh } ( "  LogEx::Write  \"   pre installation:\"\n" );
-  printf { $fh } ( "  LogEx::Write  \"SectionMain: Garmin Maps Dir:\"\n" );
+  printf { $fh } ( "  LogEx::Write  \"SectionMain: Garmin Maps Dir: pre installation\"\n" );
   printf { $fh } ( "  LogEx::Write  \"   --------------------------------------------------------------------------------\"\n" );
-  printf { $fh } ( "  ExecDos::exec 'cmd /C dir \"\$GarminMapsDir\"' \"\" \"\$MyTempDir\\garminmapsdir-output.log\"\n" );
-  printf { $fh } ( "  LogEx::AddFile \"   \" \"\$MyTempDir\\garminmapsdir-output.log\"\n" );
+  printf { $fh } ( "  Push \"*\"\n" );
+  printf { $fh } ( "  Push \"\$GarminMapsDir\"\n" );
+  printf { $fh } ( "  Call MakeFileList\n" );
   printf { $fh } ( "  LogEx::Write  \"   --------------------------------------------------------------------------------\"\n" );
   printf { $fh } ( "  \n" );
   printf { $fh } ( "  ; Extract 7za.exe\n" );
@@ -4265,11 +4304,11 @@ sub create_nsis_nsi_gmap {
   printf { $fh } ( "  \n" );
   printf { $fh } ( "  ; Print Garmin Maps Dir content:\n" );
   printf { $fh } ( "  ; ------------------------------\n" );
-  printf { $fh } ( "  LogEx::Write  \"   pre installation:\"\n" );
-  printf { $fh } ( "  LogEx::Write  \"SectionMain: Garmin Maps Dir:\"\n" );
+  printf { $fh } ( "  LogEx::Write  \"SectionMain: Garmin Maps Dir: post installation\"\n" );
   printf { $fh } ( "  LogEx::Write  \"   --------------------------------------------------------------------------------\"\n" );
-  printf { $fh } ( "  ExecDos::exec 'cmd /C dir \"\$GarminMapsDir\"' \"\" \"\$MyTempDir\\garminmapsdir-output.log\"\n" );
-  printf { $fh } ( "  LogEx::AddFile \"   \" \"\$MyTempDir\\garminmapsdir-output.log\"\n" );
+  printf { $fh } ( "  Push \"*\"\n" );
+  printf { $fh } ( "  Push \"\$GarminMapsDir\"\n" );
+  printf { $fh } ( "  Call MakeFileList\n" );
   printf { $fh } ( "  LogEx::Write  \"   --------------------------------------------------------------------------------\"\n" );
   printf { $fh } ( "  \n" );
   printf { $fh } ( "  ; Delete temporary directory and content\n" );
@@ -4342,6 +4381,38 @@ sub create_nsis_nsi_gmap {
   printf { $fh } ( "  LogEx::Close\n" );
   printf { $fh } ( "  Abort\n" );
   printf { $fh } ( "FunctionEnd\n" );
+  printf { $fh } ( "\n" );
+
+  # Function MakeFileList (alternative dir command)
+  printf { $fh } ( "; Function MakeFileList (dir)\n" );
+  printf { $fh } ( "; ---------------------------\n" );
+  printf { $fh } ( "Function MakeFileList\n" );
+  printf { $fh } ( "  Exch \$R0 #path\n" );
+  printf { $fh } ( "  Exch\n" );
+  printf { $fh } ( "  Exch \$R1 #filter\n" );
+  printf { $fh } ( "  Exch\n" );
+  printf { $fh } ( "  Push \$R2\n" );
+  printf { $fh } ( "  Push \$R3\n" );
+  printf { $fh } ( "    ClearErrors\n" );
+  printf { $fh } ( "    FindFirst \$R2 \$R3 \"\$R0\\\$R1\"\n" );
+  printf { $fh } ( "    \n" );
+  printf { $fh } ( "    Loop:\n" );
+  printf { $fh } ( "    IfErrors Done\n" );
+  printf { $fh } ( "      IfFileExists \"\$R0\\\$R3\\*.*\" +3\n" );
+  printf { $fh } ( "      LogEx::Write \"   f  \$R0\\\$R3\"\n" );
+  printf { $fh } ( "      Goto +2\n" );
+  printf { $fh } ( "      LogEx::Write \"   d  \$R0\\\$R3\"\n" );
+  printf { $fh } ( "      FindNext \$R2 \$R3\n" );
+  printf { $fh } ( "      Goto Loop\n" );
+  printf { $fh } ( "      \n" );
+  printf { $fh } ( "    Done:\n" );
+  printf { $fh } ( "      FindClose \$R3\n" );
+  printf { $fh } ( "  Pop \$R3\n" );
+  printf { $fh } ( "  Pop \$R2\n" );
+  printf { $fh } ( "  Pop \$R1\n" );
+  printf { $fh } ( "  Pop \$R0\n" );
+  printf { $fh } ( "FunctionEnd\n" );
+  printf { $fh } ( "\n" );
 
   close ( $fh ) or die ( "Can't close $filename: $OS_ERROR\n" );
 
@@ -5900,6 +5971,12 @@ sub show_actionsummary {
     printf { *STDOUT }   ( "Typ file:   %s.TYP\n",  $maptypfile );
     printf { *STDOUT }   ( "Style Dir:  %s\n",  $mapstyledir );
     printf { *STDOUT }   ( "Elevation:  %s m\n",    $ele );
+    if ( $hqele ) {
+      printf { *STDOUT } ( "Ele Type:   highQuality Elevation (ele_special)\n" );
+    }
+    else {
+      printf { *STDOUT } ( "Ele Type:   normal\n" );
+    }
     if ( $maptype == 3 ) {
       printf { *STDOUT } ( "Map type:   downloadable OSM extract\n" );
     }
@@ -5995,27 +6072,41 @@ sub show_help {
       . "perl $programName  --ram=6000    --cores=max   build     Freizeitkarte_Oesterreich  DEXTENDEDROUTING\n\n"
       . "Options:\n"
       . "--ram      = javaheapsize in MB (join, split, build) (default = %d)\n"
+      . "\n"
       . "--cores    = max. number of CPU cores (build) (1, 2, ..., max; default = %d)\n"
+      . "\n"
       . "--ele      = equidistance of elevation lines (fetch_ele) (10, 20; default = 20)\n"
+      . "\n"
+      . "--hqele\n"
+      . "             use ele_special/ele_xx_yyy_zzz as download source for elevation data (special sources, hq)\n"
+      . "\n"
       . "--typfile  = filename of a valid typfile to be used (build, gmap, nsis, gmapsupp, imagedir, typ) (default = freizeit.TYP)\n"
+      . "\n"
       . "--style    = name of the style to be used, must be a directory below styles (default = fzk)\n"
+      . "\n"
       . "--language = overwrite the default language of a map (en=english, de=german);\n"
       . "             if you build a map for another language than the map's default language,\n"
       . "             this option needs to be set for all subcommands, else it swaps back to the default language and possibly fails.\n"
+      . "\n"
       . "--unicode  = Build the map in unicode (CP65001) instead of in the native codepage of the map language.\n"
       . "                --unicode\n"
+      . "             ATTENTION: unicode maps are not supported on all Garmin devices !\n"
+      . "\n"
       . "--ntl      = overwrite the default name-tag-list for the mkgmap run (name) with a specific list, e.g.\n"
       . "                --ntl=\"name:en,int_name,name\"\n"
       . "             Please check mkgmap documentation for more information.\n"
+      . "\n"
       . "--downloadbar\n"
       . "           = Show a download progress bar during actions 'bootstrap', 'fetch_osm' and 'fetch_ele'.\n"
       . "                --downloadbar\n"
+      . "\n"
       . "--downloadspeed\n"
       . "           = Set speed limit for downloads during actions 'bootstrap', 'fetch_osm' and 'fetch_ele'.\n"
       . "             Setting speed limit in number of bytes:\n"
       . "                --downloadspeedlimit=15\n"
       . "             You can also set the speed limit in kilobytes (k), megabytes (m) or gigabytes (g) by using the correct character, e.g.:\n"
       . "                --downloadspeedlimit=15m\n"
+      . "\n"
       . "--continuedownload\n"
       . "           = try to continue interrupted downloads for actions 'fetch_osm' and 'fetch_ele'.\n"
       . "                --continuedownload\n"
@@ -6023,6 +6114,7 @@ sub show_help {
       . "             - can only work if you don't use the 'create' action, which cleans out any files from the working directories\n"
       . "             - using this option on fully completed downloads will fail to download anything new.\n"
       . "             - not guaranteed to work always and might create data garbage, but worth a try on huge downloads\n"
+      . "\n"
 	  . "--dempath\n"
 	  . "           = specify a directory or ZIP file with HGT files used to add a Digital Elevation Model subfile to the map (build).\n"
 	  . "                --dempath=D:/fzk/hgtfiles\n"
@@ -6040,6 +6132,7 @@ sub show_help {
 	  . "           = Define dem-dists values for mkgmap in case --demtype is not set.\n"
 	  . "                --demdists=\"9942,19884,29826,39768,49710,59652,69594,79536\"\n"
       . "             Please check mkgmap documentation for more information.\n"
+      . "\n"
       . "\n"
       . "PPO        = preprocessor options (multiple possible), to be invoked with D<option>\n"
       . "\n"
@@ -6068,8 +6161,14 @@ sub show_help {
 #      printf { *STDOUT } ( "%-10s = %s\n", $actions[ $i ][ $ACTIONNAME ], $actions[ $i ][ $ACTIONDESC ] );
 #    }
 #  }
-  printf { *STDOUT } ( "\nID = Code = Map  (default language):\n" );
-
+  if ( $optional ) {
+	printf { *STDOUT } ( "\n\nList of all supported Maps\n===========================\n" );
+  }
+  else {
+	printf { *STDOUT } ( "\n\nList of selected Maps\n===========================\n" );	  
+  }
+  printf { *STDOUT } ( "%-4s = %-26s = %-50s(%s)\n", "ID", "Code", "Map", "def lang" );
+  printf { *STDOUT } ("------------------------------------------------------------------------------------------------ \n" );
   for my $mapdata ( @maps ) {
     if ( $optional ) {
       # alle Lï¿½nder und Regionen
