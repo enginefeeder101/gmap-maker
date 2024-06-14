@@ -5028,7 +5028,15 @@ sub extract_osm {
 
   	 # File already exists or has just been created: let's try to copy the file
      printf { *STDERR } ( "\nCopying the existing OSM data file $source_filename ...\n" );
-     copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     my $hardlink_failed = 0;
+     if ( ( $OSNAME eq 'darwin' ) || ( $OSNAME eq 'linux' ) || ( $OSNAME eq 'freebsd' ) || ( $OSNAME eq 'openbsd' ) ) {
+       # OS X, Linux, FreeBSD, OpenBSD
+       link ( "$source_filename", "$destination_filename" ) or $hardlink_failed = 1;
+     }
+     if ( ( $hardlink_failed eq 1 ) || ( $OSNAME eq 'MSWin32' ) ) {
+       # Windows
+       copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     }
      printf { *STDERR } ( "\n") ;
 
   }
@@ -5118,7 +5126,15 @@ sub extract_ele {
 
      # File already exists or has just been created: let's try to copy the file
      printf { *STDERR } ( "\nCopying the existing OSM data file $source_filename ...\n" );
-     copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     my $hardlink_failed = 0;
+     if ( ( $OSNAME eq 'darwin' ) || ( $OSNAME eq 'linux' ) || ( $OSNAME eq 'freebsd' ) || ( $OSNAME eq 'openbsd' ) ) {
+       # OS X, Linux, FreeBSD, OpenBSD
+       link ( "$source_filename", "$destination_filename" ) or $hardlink_failed = 1;
+     }
+     if ( ( $hardlink_failed eq 1 ) || ( $OSNAME eq 'MSWin32' ) ) {
+       # Windows
+       copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     }
      printf { *STDERR } ( "\n") ;
 
   }
