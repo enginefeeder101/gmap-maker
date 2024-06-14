@@ -58,6 +58,7 @@ my @actions = (
   [ 'zip',        'G. zip all maps' ,                                                 'optional' ,    'yes' ,      '23' ],
   [ 'regions',    'H. extract all needed maps from big region data',                  'optional' ,    'no' ,       '1' ],
   [ 'extract_osm','I. extract single map from big region data' ,                      'optional' ,    'no' ,       '2' ],
+  [ 'extract_ele','I. extract elevation data from big region data' ,                  'optional' ,    'no' ,       '2' ],
   [ 'alltypfiles','J. Create all languages of the TYP files' ,                        'optional' ,    'no' ,       '0' ],
   [ 'replacetyp', 'K. Create all language versions of ReplaceTyp.zip' ,               'optional' ,    'no' ,       '0' ],
   [ 'check_osmid','L. Check overlapping OSM ID ranges for map and ele',               'optional' ,    'no' ,       '23' ],
@@ -140,30 +141,31 @@ my @seaboundariesurl = (
 #my %lic_fzk = (
 #   'license_type'           => encode('utf8', decode('iso-8859-1','CC BY 3.0')) ,
 ##   'license_string_short'   => encode('utf8', decode('iso-8859-1','FZK project 123456')) ,
-#   'license_string_short'   => encode('utf8', decode('iso-8859-1','FZK project äöüéèê')) ,
+#   'license_string_short'   => encode('utf8', decode('iso-8859-1','FZK project Ã¤Ã¶Ã¼Ã©Ã¨Ãª')) ,
 #   'license_string_medium'  => encode('utf8', decode('iso-8859-1','FZK project (Freizeitkarte), freizeitkarte-osm.de')) ,
 #   'license_string_long'    => encode('utf8', decode('iso-8859-1','FZK project (Freizeitkarte), freizeitkarte-osm.de, free for research and private use' )),
 #   'data_provider_name'     => encode('utf8', decode('iso-8859-1','Freizeitkarte' )),
 #   'data_provider_homepage' => encode('utf8', decode('iso-8859-1','freizeitkarte-osm.de' )),
-#   'additional_info_de'     => encode('utf8', decode('iso-8859-1',"Die hier verfügbaren Karten stellen ein aus den Karten- und Höhendaten abgeleitetes Werk (produced work) dar. Die Karten können für private oder wissenschaftliche Zwecke frei (uneingeschränkt) genutzt werden.\n")) ,
+#   'additional_info_de'     => encode('utf8', decode('iso-8859-1',"Die hier verfÃ¼gbaren Karten stellen ein aus den Karten- und HÃ¶hendaten abgeleitetes Werk (produced work) dar. Die Karten kÃ¶nnen fÃ¼r private oder wissenschaftliche Zwecke frei (uneingeschrÃ¤nkt) genutzt werden.\n")) ,
 #   'additional_info_en'     => encode('utf8', decode('iso-8859-1',"The available maps are a derived work from map and elevation data. The maps can be used free for personal or academic purposes.\n")) ,
-#   'use_de'                 => encode('utf8', decode('iso-8859-1',"Nutzung des Kartenmaterial:\nDie Nutzung des Kartenmaterials erfolgt auf eigene Gefahr. Das Kartenmaterial und oder das Routing kann Fehler enthalten oder unzureichend sein. Die Ersteller dieser Karten übernehmen keinerlei Gewährleistung oder Haftung für Schäden die direkt oder indirekt durch die Nutzung des Kartenmaterial entstehen.\n")),
+#   'use_de'                 => encode('utf8', decode('iso-8859-1',"Nutzung des Kartenmaterial:\nDie Nutzung des Kartenmaterials erfolgt auf eigene Gefahr. Das Kartenmaterial und oder das Routing kann Fehler enthalten oder unzureichend sein. Die Ersteller dieser Karten Ã¼bernehmen keinerlei GewÃ¤hrleistung oder Haftung fÃ¼r SchÃ¤den die direkt oder indirekt durch die Nutzung des Kartenmaterial entstehen.\n")),
 #   'use_en'                 => encode('utf8', decode('iso-8859-1',"Use of the maps:\nThe use of maps is at your own risk. The map data and / or the routing may contain errors or may be insufficient.\nThe creators of these maps are not liable for any damage resulting directly or indirectly from the use of the maps.\n")) ,
-#   'help_de'                => encode('utf8', decode('iso-8859-1',"Deine Mithilfe ist erwünscht:\nHilf mit die OpenStreetMap-Quelldaten dieser Karte, und damit auch diese Themenkarte, zu verbessern. Fehlende oder inkorrekte Kartendaten kannst auch du auf OpenStreetMap eintragen oder korrigieren. Dies geht viel leichter als du vielleicht glaubst. Melde dich hierzu auf OpenStreetMap an und versuche es einfach mal. Alle anderen Kartennutzer können so von deinem Wissen profitieren.\nAuch Information über Defekte, die dir bei der Nutzung dieser Karte auffallen, sind hilfreich - ebenso Änderungs- oder Verbesserungsvorschläge.\nDanke für deine Unterstützung.\n ")),
+#   'help_de'                => encode('utf8', decode('iso-8859-1',"Deine Mithilfe ist erwÃ¼nscht:\nHilf mit die OpenStreetMap-Quelldaten dieser Karte, und damit auch diese Themenkarte, zu verbessern. Fehlende oder inkorrekte Kartendaten kannst auch du auf OpenStreetMap eintragen oder korrigieren. Dies geht viel leichter als du vielleicht glaubst. Melde dich hierzu auf OpenStreetMap an und versuche es einfach mal. Alle anderen Kartennutzer kÃ¶nnen so von deinem Wissen profitieren.\nAuch Information Ã¼ber Defekte, die dir bei der Nutzung dieser Karte auffallen, sind hilfreich - ebenso Ã„nderungs- oder VerbesserungsvorschlÃ¤ge.\nDanke fÃ¼r deine UnterstÃ¼tzung.\n ")),
 #   'help_en'                => encode('utf8', decode('iso-8859-1',"Your help is welcome:\nYou can help to improve the OpenStreetMap source data, and therefore also this map. If something is missing or wrong in the source data you can add or correct that on OpenStreetMap. That's easier as you might think. Get registered on OpenStreetMap and just try it out. This way everyone can profit from your knowledge.\nInformation about defects found while using this map are also helpful. Also ideas about changes and improvments are very welcome.\nMany thanks for your support.\n")),
 #   );
 my %lic_fzk = ();
+my %lic_ofm = ();
 
 # OSM data: static
 #my %lic_osm = (
 #   'license_type'           => encode('utf8', decode('iso-8859-1','ODbl')) ,
 ##   'license_string_short'   => encode('utf8', decode('iso-8859-1','OSM contributors 123456')) ,
-#   'license_string_short'   => encode('utf8', decode('iso-8859-1','OSM contributors äöüéèê')) ,
+#   'license_string_short'   => encode('utf8', decode('iso-8859-1','OSM contributors Ã¤Ã¶Ã¼Ã©Ã¨Ãª')) ,
 #   'license_string_medium'  => encode('utf8', decode('iso-8859-1','OSM contributors, www.openstreetmap.org')) ,
 #   'license_string_long'    => encode('utf8', decode('iso-8859-1','OSM contributors, www.openstreetmap.org, ODbl')) ,
 #   'data_provider_name'     => encode('utf8', decode('iso-8859-1','OpenStreetMap')) ,
 #   'data_provider_homepage' => encode('utf8', decode('iso-8859-1','www.openstreetmap.org')) ,
-#   'additional_info_de'     => encode('utf8', decode('iso-8859-1',"Die dargestellten Kartenobjekte basieren auf den Daten des OpenStreetMap-Projektes. OpenStreetMap ist eine freie, editierbare Karte der gesamten Welt, die von Menschen wie dir erstellt wird. OpenStreetMap ermöglicht es geographische Daten gemeinschaftlich von überall auf der Welt anzuschauen und zu bearbeiten.\n")) ,
+#   'additional_info_de'     => encode('utf8', decode('iso-8859-1',"Die dargestellten Kartenobjekte basieren auf den Daten des OpenStreetMap-Projektes. OpenStreetMap ist eine freie, editierbare Karte der gesamten Welt, die von Menschen wie dir erstellt wird. OpenStreetMap ermÃ¶glicht es geographische Daten gemeinschaftlich von Ã¼berall auf der Welt anzuschauen und zu bearbeiten.\n")) ,
 #   'additional_info_en'     => encode('utf8', decode('iso-8859-1',"All maps are based on data from the OpenStreetMap project. OpenStreetMap is a free editable map of the whole world that is created by people like you. OpenStreetMap allows geographic data to look at collaborative way from anywhere in the world and edit it.\n")) ,
 #   );
 my %lic_osm = ();
@@ -189,7 +191,7 @@ my %lic_ele = ();
 my @maps = (
   # ID, 'Karte', 'URL der Quelle', 'Code', 'language', 'oldName', 'Type', 'Parent'
 
-  # Bundesländer
+  # BundeslÃ¤nder
   [ -1,   'Bundeslaender',                        'URL',                                                                                               'Code',               'Language', 'oldName',                            'Type', 'Parent'         ],
   [ 5810, 'Freizeitkarte_BADEN-WUERTTEMBERG',     'http://download.geofabrik.de/europe/germany/baden-wuerttemberg-latest.osm.pbf',                     'BADEN-WUERTTEMBERG',       'de', 'Freizeitkarte_Baden-Wuerttemberg',        3, 'NA'             ],
   [ 5811, 'Freizeitkarte_BAYERN',                 'http://download.geofabrik.de/europe/germany/bayern-latest.osm.pbf',                                 'BAYERN',                   'de', 'Freizeitkarte_Bayern',                    3, 'NA'             ],
@@ -233,7 +235,7 @@ my @maps = (
   [ 5855, 'Freizeitkarte_SCHWABEN',               'http://download.geofabrik.de/europe/germany/bayern/schwaben-latest.osm.pbf',                        'SCHWABEN',                 'de', 'Freizeitkarte_Schwaben',                  3, 'NA'             ],
   [ 5856, 'Freizeitkarte_UNTERFRANKEN',           'http://download.geofabrik.de/europe/germany/bayern/unterfranken-latest.osm.pbf',                    'UNTERFRANKEN',             'de', 'Freizeitkarte_Unterfranken',              3, 'NA'             ],
 
-  # Regionen in Frankreich (unvollständig)
+  # Regionen in Frankreich (unvollstÃ¤ndig)
   [ -1,   'Regionen Frankreich',                  'URL',                                                                                               'Code',               'Language', 'oldName',                            'Type', 'Parent'         ],
   [ 5860, 'Freizeitkarte_LORRAINE',               'http://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf',                                'LORRAINE',                 'de', 'Freizeitkarte_Lothringen',                3, 'NA'             ],
   [ 5861, 'Freizeitkarte_ALSACE',                 'http://download.geofabrik.de/europe/france/alsace-latest.osm.pbf',                                  'ALSACE',                   'de', 'Freizeitkarte_Elsass',                    3, 'NA'             ],
@@ -253,6 +255,7 @@ my @maps = (
 #  [ 6031, 'Freizeitkarte_AZE',                    'http://be.gis-lab.info/data/osm_dump/dump/latest/AZ.osm.pbf',                                       'AZE',                      'en', 'no_old_name',                             3, 'NA'             ],
   [ 6112, 'Freizeitkarte_BLR',                    'http://download.geofabrik.de/europe/belarus-latest.osm.pbf',                                        'BLR',                      'ru', 'Freizeitkarte_Belarus',                   3, 'NA'             ],
   [ 6056, 'Freizeitkarte_BEL',                    'http://download.geofabrik.de/europe/belgium-latest.osm.pbf',                                        'BEL',                      'fr', 'Freizeitkarte_Belgien',                   3, 'NA'             ],
+  [ 6057, 'OpenFietsMap_BEL',                     'http://download.geofabrik.de/europe/belgium-latest.osm.pbf',                                        'OFM_BEL',                  'nl', 'no_old_name',                             3, 'NA'             ],
   [ 6070, 'Freizeitkarte_BIH',                    'http://download.geofabrik.de/europe/bosnia-herzegovina-latest.osm.pbf',                             'BIH',                      'en', 'Freizeitkarte_Bosnien-Herzegowina',       3, 'NA'             ],
   [ 6100, 'Freizeitkarte_BGR',                    'http://download.geofabrik.de/europe/bulgaria-latest.osm.pbf',                                       'BGR',                      'en', 'Freizeitkarte_Bulgarien',                 3, 'NA'             ],
   [ 6756, 'Freizeitkarte_CHE',                    'http://download.geofabrik.de/europe/switzerland-latest.osm.pbf',                                    'CHE',                      'de', 'Freizeitkarte_Schweiz',                   3, 'NA'             ],
@@ -260,6 +263,7 @@ my @maps = (
   [ 6203, 'Freizeitkarte_CZE',                    'http://download.geofabrik.de/europe/czech-republic-latest.osm.pbf',                                 'CZE',                      'en', 'Freizeitkarte_Tschechien',                3, 'NA'             ],
   [ 6208, 'Freizeitkarte_DNK',                    'http://download.geofabrik.de/europe/denmark-latest.osm.pbf',                                        'DNK',                      'en', 'Freizeitkarte_Daenemark',                 3, 'NA'             ],
   [ 6276, 'Freizeitkarte_DEU',                    'http://download.geofabrik.de/europe/germany-latest.osm.pbf',                                        'DEU',                      'de', 'Freizeitkarte_Deutschland',               3, 'NA'             ],
+  [ 6277, 'OpenFietsMap_DEU',                     'http://download.geofabrik.de/europe/germany-latest.osm.pbf',                                        'OFM_DEU',                  'de', 'no_old_name',                             3, 'NA'             ],
   [ 6724, 'Freizeitkarte_ESP',                    'http://download.geofabrik.de/europe/spain-latest.osm.pbf',                                          'ESP',                      'en', 'Freizeitkarte_Spanien',                   3, 'NA'             ],
   [ 6233, 'Freizeitkarte_EST',                    'http://download.geofabrik.de/europe/estonia-latest.osm.pbf',                                        'EST',                      'en', 'Freizeitkarte_Estland',                   3, 'NA'             ],
   [ 6234, 'Freizeitkarte_FRO',                    'http://download.geofabrik.de/europe/faroe-islands-latest.osm.pbf',                                  'FRO',                      'en', 'Freizeitkarte_Faeroeer',                  3, 'NA'             ],
@@ -288,6 +292,7 @@ my @maps = (
   [ 6470, 'Freizeitkarte_MLT',                    'http://download.geofabrik.de/europe/malta-latest.osm.pbf',                                          'MLT',                      'en', 'Freizeitkarte_Malta',                     3, 'NA'             ],
   [ 6499, 'Freizeitkarte_MNE',                    'http://download.geofabrik.de/europe/montenegro-latest.osm.pbf',                                     'MNE',                      'en', 'Freizeitkarte_Montenegro',                3, 'NA'             ],
   [ 6528, 'Freizeitkarte_NLD',                    'http://download.geofabrik.de/europe/netherlands-latest.osm.pbf',                                    'NLD',                      'nl', 'Freizeitkarte_Niederlande',               3, 'NA'             ],
+  [ 6529, 'OpenFietsMap_NLD',                     'http://download.geofabrik.de/europe/netherlands-latest.osm.pbf',                                    'OFM_NLD',                  'nl', 'no_old_name',                             3, 'NA'             ],
   [ 6578, 'Freizeitkarte_NOR',                    'http://download.geofabrik.de/europe/norway-latest.osm.pbf',                                         'NOR',                      'en', 'Freizeitkarte_Norwegen',                  3, 'NA'             ],
   [ 6616, 'Freizeitkarte_POL',                    'http://download.geofabrik.de/europe/poland-latest.osm.pbf',                                         'POL',                      'pl', 'Freizeitkarte_Polen',                     3, 'NA'             ],
   [ 6620, 'Freizeitkarte_PRT',                    'http://download.geofabrik.de/europe/portugal-latest.osm.pbf',                                       'PRT',                      'pt', 'Freizeitkarte_Portugal',                  3, 'NA'             ],
@@ -334,7 +339,7 @@ my @maps = (
 #  [ 7050, 'Freizeitkarte_EUROP-RUSSIA',           'http://download.geofabrik.de/europe/russia-european-part-latest.osm.pbf',                           'EUROP-RUSSIA',             'en', 'Freizeitkarte_Euro-Russland',             3, 'NA'             ],
 #  [ 7060, 'Freizeitkarte_CANARY-ISLANDS',         'http://download.geofabrik.de/africa/canary-islands-latest.osm.pbf',                                 'CANARY-ISLANDS',           'en', 'Freizeitkarte_Kanarische-Inseln',         3, 'NA'             ],
 
-  # PLUS Länder, Ländercodes: 7000 + ISO-3166 (numerisch)
+  # PLUS LÃ¤nder, LÃ¤ndercodes: 7000 + ISO-3166 (numerisch)
   [ -1,   'Freizeitkarte PLUS Laender',           'URL',                                                                                               'Code',               'Language', 'oldName',                            'Type', 'Parent'         ],
   [ 7040, 'Freizeitkarte_AUT+',                   'NA',                                                                                                'AUT+',                     'de', 'no_old_name',                             2, 'EUROPE'         ],
   [ 7056, 'Freizeitkarte_BEL+',                   'NA',                                                                                                'BEL+',                     'en', 'no_old_name',                             2, 'EUROPE'         ],
@@ -356,13 +361,17 @@ my @maps = (
 
   # Sonderkarten wie z.B. FZK-eigene Extrakte (alle ohne geofabrik-Download (NA = Not Applicable); Ausnahme Europa)
   [ -1,   'Freizeitkarte Regionen',               'URL',                                                                                               'Code',               'Language', 'oldName',                            'Type', 'Parent'         ],
+  [ 8887, 'OpenFietsMap_EUROPE',                  'http://download.geofabrik.de/europe-latest.osm.pbf',                                                'OFM_EUROPE',               'en', 'no_old_name',                             1, 'NA'             ],
   [ 8888, 'Freizeitkarte_EUROPE',                 'http://download.geofabrik.de/europe-latest.osm.pbf',                                                'EUROPE',                   'en', 'no_old_name',                             1, 'NA'             ],
   [ 8010, 'Freizeitkarte_GBR_IRL',                'NA',                                                                                                'GBR_IRL',                  'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8020, 'Freizeitkarte_ALPS',                   'NA',                                                                                                'ALPS',                     'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8021, 'Freizeitkarte_ALPS_WEST',              'NA',                                                                                                'ALPS_WEST',                'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8022, 'Freizeitkarte_ALPS_EAST',              'NA',                                                                                                'ALPS_EAST',                'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8030, 'Freizeitkarte_DNK_NOR_SWE_FIN',        'NA',                                                                                                'DNK_NOR_SWE_FIN',          'en', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8031, 'Freizeitkarte_NORTH-EUROPE',           'NA',                                                                                                'NORTH-EUROPE',             'nl', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8032, 'OpenFietsMap_NORTH-EUROPE',           'NA',                                                                                                 'OFM_NORTH-EUROPE',         'nl', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8040, 'Freizeitkarte_BEL_NLD_LUX',            'NA',                                                                                                'BEL_NLD_LUX',              'en', 'no_old_name',                             2, 'EUROPE'         ],
+  [ 8041, 'OpenFietsMap_BEL_NLD_LUX',             'NA',                                                                                                'OFM_BEL_NLD_LUX',          'nl', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8050, 'Freizeitkarte_ESP_PRT',                'NA',                                                                                                'ESP_PRT',                  'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8060, 'Freizeitkarte_PYRENEES',               'NA',                                                                                                'PYRENEES',                 'en', 'no_old_name',                             2, 'EUROPE'         ],
   [ 8070, 'Freizeitkarte_CARPATHIAN',             'NA',                                                                                                'CARPATHIAN',               'en', 'no_old_name',                             2, 'EUROPE'         ],
@@ -384,6 +393,7 @@ my @maps = (
 # [ 9011, 'Freizeitkarte_RUS',                     'http://data.gis-lab.info/osm_dump/dump/latest/RU.osm.pbf',                                          'RUS',                     'ru', 'no_old_name',                             1, 'NA'             ],
   [ 9011, 'Freizeitkarte_RUS',                     'http://download.geofabrik.de/russia-latest.osm.pbf',                                                'RUS',                     'ru', 'no_old_name',                             1, 'NA'             ],
   [ 9020, 'Freizeitkarte_ESP_CANARIAS',            'http://download.geofabrik.de/africa/canary-islands-latest.osm.pbf',                                 'ESP_CANARIAS',            'en', 'Freizeitkarte_Kanarische-Inseln',         3, 'NA'             ],
+  [ 9021, 'OpenFietsMap_ESP_CANARIAS',             'http://download.geofabrik.de/africa/canary-islands-latest.osm.pbf',                                 'OFM_ESP_CANARIAS',        'en', 'no_old_name',                             3, 'NA'             ],
   [ 9030, 'Freizeitkarte_RUS_CENTRAL_FD+',         'NA',                                                                                                'RUS_CENTRAL_FD+',         'ru', 'no_old_name',                             2, 'RUS'            ],
   [ 9040, 'Freizeitkarte_AZORES',                  'http://download.geofabrik.de/europe/azores-latest.osm.pbf',                                         'AZORES',                  'pt', 'Freizeitkarte_Azoren',                    3, 'NA'             ],
   [ 9050, 'Freizeitkarte_ISR_PSE',                 'http://download.geofabrik.de/asia/israel-and-palestine-latest.osm.pbf',                             'ISR_PSE',                 'en', 'Freizeitkarte_Israel_Palaestina',         3, 'NA'             ],
@@ -544,6 +554,10 @@ my $typfilelangcode = $EMPTY;
 
 my $mkgmap_common_parameter = $EMPTY;
 
+my $mapkind = "Freizeitkarte"; # or "OpenFietsMap"
+my $ofmmaptypefile = "ofm.TYP";
+my $ofmmapstyle = "ofm";
+my $ofmmapstyledir = 'style/ofm';
 
 # get the command line parameters
 if ( ! GetOptions ( 'h|?|help' => \$help, 'o|optional' => \$optional, 'u|unicode' => \$unicode, 'downloadbar' => \$downloadbar, 'continuedownload' => \$continuedownload, 'downloadspeed=s' => \$downloadspeed, 'ram=s' => \$ram, 'cores=s' => \$cores, 'ele=s' => \$ele, 'hqele' => \$hqele, 'typfile=s' => \$typfile, 'style=s' => \$styledir, 'language=s' => \$language, 'ntl=s' => \$nametaglist, 'dempath=s' => \$dempath, 'demdists=s' => \$demdists, 'demtype=s' => \$demtype ) ) {
@@ -689,6 +703,15 @@ if ( $error ) {
   printf { *STDOUT } ( "ERROR:\n  Map '" . $mapinput . "' not valid (invalid ID, code or name).\n\n\n" );
   show_usage ();
   exit(1);
+}
+
+# Check for OpenFietsMap
+if ( substr($mapname, 0, 12) eq "OpenFietsMap") {
+  $mapkind     = "OpenFietsMap";
+  $maptypfile  = $ofmmaptypefile;
+  $mapstyle    = $ofmmapstyle;
+  $mapstyledir = $ofmmapstyledir;
+  %lic_fzk     = %lic_ofm;
 }
 
 # Default Map Language overwritten ?
@@ -1001,6 +1024,9 @@ elsif ( $actionname eq 'fetch_map' ) {
 }
 elsif ( $actionname eq 'extract_osm' ) {
   extract_osm ();
+}
+elsif ( $actionname eq 'extract_ele' ) {
+  extract_ele ();
 }
 exit ( 0 );
 
@@ -1373,7 +1399,7 @@ sub fetch_osmdata {
       die ( "ERROR:\n  download of osm data from $osmurl failed.\n\n" );
   }
 
-  # auf gültige osm.pbf-Datei prüfen
+  # auf gÃ¼ltige osm.pbf-Datei prÃ¼fen
   if ( !check_osmpbf ( $filename ) ) {
     printf { *STDERR } ( "\nError: File <$filename> is not a valid osm.pbf file.\n" );
     die ( "Please check this file concerning error hints (eg. communications errors).\n" );
@@ -1419,6 +1445,7 @@ sub fetch_eledata {
     # $eleurl = "$elevationbaseurl{ele25}/Hoehendaten_$mapname.osm.pbf";
     die ( "ERROR:\n  elevation data: unsupported constant contour value of $ele choosen.\n\n" );
   }
+  $eleurl =~ s/OpenFietsMap/Freizeitkarte/g;
 
    download_url( $eleurl, $filename);
 
@@ -1427,7 +1454,7 @@ sub fetch_eledata {
       die ( "ERROR:\n  download of elevation data from $eleurl failed.\n\n" );
   }
 
-  # auf gültige osm.pbf-Datei prüfen
+  # auf gÃ¼ltige osm.pbf-Datei prÃ¼fen
   if ( !check_osmpbf ( $filename ) ) {
     printf { *STDERR } ( "\nError: File <$filename> is not a valid osm.pbf file.\n" );
     die ( "Please check this file concerning error hints (eg. communications errors).\n" );
@@ -1516,6 +1543,7 @@ sub read_default_licenses {
 
   # Set filenames
   my $fzk_licensefile = "$BASEPATH/licenses/default-freizeitkarte.license";
+  my $ofm_licensefile = "$BASEPATH/licenses/default-openfietsmap.license";
   my $osm_licensefile = "$BASEPATH/licenses/default-osm.license";
   my $ele_licensefile = "$BASEPATH/licenses/default-elevation.license";
 
@@ -1524,6 +1552,13 @@ sub read_default_licenses {
   %lic_tmphash = read_licensefile($fzk_licensefile);
   foreach my $hashkey ( sort ( keys %lic_tmphash ) ) {
     $lic_fzk{$hashkey} = $lic_tmphash{$hashkey};
+  }
+
+  # Handle ofm license file
+  %lic_tmphash = ();
+  %lic_tmphash = read_licensefile($ofm_licensefile);
+  foreach my $hashkey ( sort ( keys %lic_tmphash ) ) {
+    $lic_ofm{$hashkey} = $lic_tmphash{$hashkey};
   }
 
   # Handle osm license file
@@ -2594,7 +2629,7 @@ sub create_cfgfile {
     }
   }
 
-  # -- no more options after that line / hier keine Optionen anfügen --
+  # -- no more options after that line / hier keine Optionen anfÃ¼gen --
 
   # Try to close the file again
   close ( $fh ) or die ( "Can't close $filename: $OS_ERROR\n" );
@@ -3331,7 +3366,7 @@ sub build_map {
 
 
 # -----------------------------------------
-# Garmin-Map-File für BaseCamp erzeugen.
+# Garmin-Map-File fÃ¼r BaseCamp erzeugen.
 # Tool : gmapi-builder.py
 # OS   : OS X
 # -----------------------------------------
@@ -3404,8 +3439,8 @@ sub create_nsis_nsi_full {
   printf { $fh } ( ";\n" );
   printf { $fh } ( "; Bemerkungen:\n" );
   printf { $fh } ( "; - Kopieren der Kartendateien\n" );
-  printf { $fh } ( "; - Eintragen der Windows-Registry-Keys für die Kartennutzung\n" );
-  printf { $fh } ( "; - Eintragen der Windows-Registry-Keys für die Deinstallation\n" );
+  printf { $fh } ( "; - Eintragen der Windows-Registry-Keys fÃ¼r die Kartennutzung\n" );
+  printf { $fh } ( "; - Eintragen der Windows-Registry-Keys fÃ¼r die Deinstallation\n" );
   printf { $fh } ( "; - Kopieren des Deinstallationsprogramms\n" );
   printf { $fh } ( "; ------------------------------------------------------------\n" );
   printf { $fh } ( "\n" );
@@ -3421,7 +3456,7 @@ sub create_nsis_nsi_full {
   printf { $fh } ( "; ----------------\n" );
   printf { $fh } ( "\n" );
   printf { $fh } ( "; Installationsverzeichnis (Default)\n" );
-  printf { $fh } ( "!define INSTALLATIONS_VERZEICHNIS \"C:\\Freizeitkarte\\%s\"\n", $mapname );
+  printf { $fh } ( "!define INSTALLATIONS_VERZEICHNIS \"C:\\$mapkind\\%s\"\n", $mapname );
   printf { $fh } ( "\n" );
   printf { $fh } ( "; Beschreibung der Karte\n" );
   printf { $fh } ( "!define KARTEN_BESCHREIBUNG \"%s\"\n", $mapname );
@@ -3438,10 +3473,10 @@ sub create_nsis_nsi_full {
   printf { $fh } ( "; Product-ID der Karte\n" );
   printf { $fh } ( "!define PRODUCT_ID \"1\"\n" );
   printf { $fh } ( "\n" );
-  printf { $fh } ( "; Name des Windows-Registrierungsschlüssels\n" );
+  printf { $fh } ( "; Name des Windows-RegistrierungsschlÃ¼ssels\n" );
   printf { $fh } ( "!define REG_KEY \"%s\"\n",     $mapname );
   printf { $fh } ( "\n" );
-  printf { $fh } ( "; Name des alten Windows-Registrierungsschlüssels (vor Umbenennung der Karten)\n" );
+  printf { $fh } ( "; Name des alten Windows-RegistrierungsschlÃ¼ssels (vor Umbenennung der Karten)\n" );
   printf { $fh } ( "!define REG_KEY_OLD \"%s\"\n", $mapnameold );
   printf { $fh } ( "\n" );
   printf { $fh } ( "; Name des kartenspezifischen TYP-Files\n" );
@@ -4625,9 +4660,9 @@ sub create_gmapsuppfile {
 
   # mkgmap-Parameter
   # --description: Anzeige des Kartennamens in BaseCamp
-  # --description: alleinige Anzeige des Kartennamens in einigen GPS-Geräten (z.B. 62er)
-  # --description: zusätzliche Anzeige des Kartennamens in einigen GPS-Geräten (z.B. Dakota)
-  # --family-name: primäre Anzeige des Kartennamens in einigen GPS-Geräten (z.B. Dakota)
+  # --description: alleinige Anzeige des Kartennamens in einigen GPS-GerÃ¤ten (z.B. 62er)
+  # --description: zusÃ¤tzliche Anzeige des Kartennamens in einigen GPS-GerÃ¤ten (z.B. Dakota)
+  # --family-name: primÃ¤re Anzeige des Kartennamens in einigen GPS-GerÃ¤ten (z.B. Dakota)
   # --series-name: This name will be displayed in MapSource in the map selection drop-down.
   my $mkgmap_parameter = sprintf (
         "--gmapsupp "
@@ -4675,9 +4710,9 @@ sub create_gmapfile {
 
   # mkgmap-Parameter
   # --description: Anzeige des Kartennamens in BaseCamp
-  # --description: alleinige Anzeige des Kartennamens in einigen GPS-Geräten (z.B. 62er)
-  # --description: zusätzliche Anzeige des Kartennamens in einigen GPS-Geräten (z.B. Dakota)
-  # --family-name: primäre Anzeige des Kartennamens in einigen GPS-Geräten (z.B. Dakota)
+  # --description: alleinige Anzeige des Kartennamens in einigen GPS-GerÃ¤ten (z.B. 62er)
+  # --description: zusÃ¤tzliche Anzeige des Kartennamens in einigen GPS-GerÃ¤ten (z.B. Dakota)
+  # --family-name: primÃ¤re Anzeige des Kartennamens in einigen GPS-GerÃ¤ten (z.B. Dakota)
   # --series-name: This name will be displayed in MapSource in the map selection drop-down.
   my $mkgmap_parameter = sprintf (
         "--gmapi "
@@ -5064,7 +5099,113 @@ sub extract_osm {
 
   	 # File already exists or has just been created: let's try to copy the file
      printf { *STDERR } ( "\nCopying the existing OSM data file $source_filename ...\n" );
-     copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     my $hardlink_failed = 0;
+     if ( ( $OSNAME eq 'darwin' ) || ( $OSNAME eq 'linux' ) || ( $OSNAME eq 'freebsd' ) || ( $OSNAME eq 'openbsd' ) ) {
+       # OS X, Linux, FreeBSD, OpenBSD
+       link ( "$source_filename", "$destination_filename" ) or $hardlink_failed = 1;
+     }
+     if ( ( $hardlink_failed eq 1 ) || ( $OSNAME eq 'MSWin32' ) ) {
+       # Windows
+       copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     }
+     printf { *STDERR } ( "\n") ;
+
+  }
+  else {
+     die ( "\nERROR: $mapname is not a region that needed local extraction.\n" );
+  }
+
+}
+
+
+# ---------------------------------------------------------------------
+# Either extract the needed elevation data from the parent Region file or,
+# if already cut, just copy it
+# ---------------------------------------------------------------------
+sub extract_ele {
+
+  # If this map is a regions that needed to be extracted, try to fetch the extracted region
+  if ( $maptype == 2 ) {
+
+     # Initialisation
+     my $mapparentname = $EMPTY;
+
+	 # Get the proper Map Parent's Name
+	 for my $tmp_mapdata ( @maps ) {
+	    if ( @$tmp_mapdata[ $MAPCODE ] eq $mapparent ) {
+		   $mapparentname = @$tmp_mapdata[ $MAPNAME ];
+		   last;
+		}
+	 }
+
+     # fill out source and destination variables
+     my $source_filename      = "$BASEPATH/work/$mapparentname/Hoehendaten_$mapname.osm.pbf";
+     my $parent_filename      = "$BASEPATH/work/$mapparentname/Hoehendaten_$mapparentname.osm.pbf";
+     my $destination_filename = "$WORKDIR/Hoehendaten_$mapname.osm.pbf";
+
+     # Check if the source file does exist already
+     if ( !(-e $source_filename ) ) {
+		# NOT existing, let's try to cut it
+
+		# Initialise few variables for the osmosis run
+        my $osmosis_parameter = "";
+
+         # Check if the source file exists and is a valid osm.pbf file
+         if ( -e $parent_filename ) {
+           if ( !check_osmpbf ( $parent_filename ) ) {
+             printf { *STDERR } ( "\nError: Resulting data file <$parent_filename> is not a valid osm.pbf file.\n" );
+             return ( 1 );
+           }
+         }
+         else {
+           printf { *STDERR } ( "\nError: Source data file <$parent_filename> does not exists.\n" );
+           printf ( "       Did you already download the osmdata of the map $mapparentname ?\n\n" );
+           return ( 1 );
+         }
+
+		 # Let's put the parameters together for the osmosis run
+         $osmosis_parameter =
+            " --read-pbf file=$parent_filename"
+          . " --tee 1"
+          . " --bounding-polygon file=$BASEPATH/poly/$mapname.poly"
+          . " --write-pbf file=$source_filename omitmetadata=yes";
+
+         # Ok, let's run osmosis, depending on the OS
+         printf { *STDERR } ( "\nExtracting needed data from OSM data file $source_filename ...\n" );
+         if ( ( $OSNAME eq 'darwin' ) || ( $OSNAME eq 'linux' ) || ( $OSNAME eq 'freebsd' ) || ( $OSNAME eq 'openbsd' ) ) {
+           # OS X, Linux, FreeBSD, OpenBSD
+           $command = "sh $BASEPATH/tools/osmosis/bin/osmosis $osmosis_parameter";
+         }
+         elsif ( $OSNAME eq 'MSWin32' ) {
+           # Windows
+           $command = "$BASEPATH/tools/osmosis/bin/osmosis.bat $osmosis_parameter";
+         }
+         else {
+           die ( "\nError: Operating System $OSNAME not supported.\n" );
+         }
+
+        # Run the acual extraction via osmosis
+        process_command ( $command );
+
+        # Check Return Value
+        if ( $? != 0 ) {
+           die ( "ERROR:\n  Cutting out the data for $mapname failed.\n\n" );
+        }
+
+     }
+
+
+     # File already exists or has just been created: let's try to copy the file
+     printf { *STDERR } ( "\nCopying the existing OSM data file $source_filename ...\n" );
+     my $hardlink_failed = 0;
+     if ( ( $OSNAME eq 'darwin' ) || ( $OSNAME eq 'linux' ) || ( $OSNAME eq 'freebsd' ) || ( $OSNAME eq 'openbsd' ) ) {
+       # OS X, Linux, FreeBSD, OpenBSD
+       link ( "$source_filename", "$destination_filename" ) or $hardlink_failed = 1;
+     }
+     if ( ( $hardlink_failed eq 1 ) || ( $OSNAME eq 'MSWin32' ) ) {
+       # Windows
+       copy ( "$source_filename", "$destination_filename" ) or die ( "copy($source_filename , $destination_filename) failed: $!\n" );
+     }
      printf { *STDERR } ( "\n") ;
 
   }
@@ -6030,7 +6171,7 @@ sub show_help {
   printf { *STDOUT } ("------------------------------------------------------------------------------------------------ \n" );
   for my $mapdata ( @maps ) {
     if ( $optional ) {
-      # alle Länder und Regionen
+      # alle LÃ¯Â¿Â½nder und Regionen
       if ( @$mapdata[ $MAPID ] == -1 ) {
         printf { *STDOUT } ( "\n%s:\n", @$mapdata[ $MAPNAME ] );    # Kommentar
       }
@@ -6040,12 +6181,12 @@ sub show_help {
     }
     else {
       # nur ausgewaehlte Karten
-      if (   ( ( @$mapdata[ $MAPID ] <= 5825 ) && ( @$mapdata[ $MAPID ] >= 5810 ) )  # Bundesländer
+      if (   ( ( @$mapdata[ $MAPID ] <= 5825 ) && ( @$mapdata[ $MAPID ] >= 5810 ) )  # BundeslÃ¤nder
         || ( @$mapdata[ $MAPID ] == 6276 )                                        # Deutschland
-        || ( @$mapdata[ $MAPID ] == 6208 )                                        # Dänemark
+        || ( @$mapdata[ $MAPID ] == 6208 )                                        # DÃ¤nemark
         || ( @$mapdata[ $MAPID ] == 6616 )                                        # Polen
         || ( @$mapdata[ $MAPID ] == 6203 )                                        # Tschechien
-        || ( @$mapdata[ $MAPID ] == 6040 )                                        # Österreich
+        || ( @$mapdata[ $MAPID ] == 6040 )                                        # Ã–sterreich
         || ( @$mapdata[ $MAPID ] == 6756 )                                        # Schweiz
         || ( @$mapdata[ $MAPID ] == 7010 )                                        # Alpen
         || ( @$mapdata[ $MAPID ] == 6250 )                                        # Frankreich
